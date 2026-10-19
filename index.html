@@ -77,7 +77,46 @@ input.input,textarea.input,select.input,.set input{background:#fff;color:#171915
 .home-dayname{font-weight:800;font-size:12px;color:#777}
 .home-foot{color:#99988e;font-size:12px;text-align:center;margin:24px 0}
 .home-back{background:transparent;border:0;color:#8d7535;padding:10px 0}
-</style></head><body><header><div class="head"><div><div class="logo">🏋️ Mi Gym</div><div class="small">Tu entrenamiento · Tus datos</div></div><span class="pill">🔒 En este dispositivo</span></div></header><main id="app" class="shell"></main><nav class="nav"><button data-view="home" class="active">⌂<br>Inicio</button><button data-view="train">🏋️<br>Entrenar</button><button data-view="progress">📈<br>Progreso</button><button data-view="calendar">📅<br>Agenda</button><button data-view="library">📖<br>Técnica</button><button data-view="settings">⚙️<br>Datos</button></nav><script>
+
+:root{color:#202020;background:#f5f5f5}
+body{background:#f5f5f5;color:#202020}
+header{background:#f9f9f9ee;border-color:#e1e1e1}
+.logo,.home-hello h1,.home-workout h2{color:#202020}
+.home-hello h1 span{color:#333}
+.panel,.home-workout,.home-weeklist,.home-stats>div{background:#fff;border-color:#e4e4e4;box-shadow:none}
+.nav{background:#fff;border-color:#dedede}
+.nav button.active{background:#303030;color:#fff}
+.nav button{color:#777}
+.primary,.home-main,.tab.active{background:#2b2b2b;color:#fff;border-color:#2b2b2b}
+.secondary,.tab,.home-outline{background:#f4f4f4;color:#242424;border-color:#dcdcdc}
+.home-chip{background:#eeeeee;color:#333}
+.warning{background:#f7f7f7;color:#555;border-color:#dedede}
+.timerbox{background:#fff;border-color:#ddd}
+.timerdigits{color:#242424}
+.last-session{background:#f3f3f3;color:#444}
+.pill,.tag{background:#f4f4f4;color:#444;border-color:#ddd}
+.set button.done{background:#22844b;color:#fff}
+input.input,textarea.input,select.input,.set input{background:#fff;color:#161616;border-color:#bdbdbd;font-size:20px;min-height:56px}
+.set input{font-size:25px;min-height:68px}
+.exercise-title-row{display:flex;align-items:center;gap:12px}
+.exercise-thumb{height:74px;width:78px;object-fit:contain;background:#f3f3f3;border-radius:12px;flex-shrink:0}
+.exercise-accordion summary{align-items:center}
+.calendar-home{padding:16px}
+.calendar-home .toolbar strong{text-transform:capitalize;font-size:17px}
+.calendar-home .actions button{font-size:20px;padding:4px 13px}
+.cal-head{text-align:center;font-size:12px;color:#888;font-weight:700;padding:8px 0}
+.calgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;margin-top:12px}
+.calday-v5{min-height:44px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0;background:#f4f4f4;border:1px solid #eee;border-radius:12px;color:#666;font-size:13px}
+.calday-v5 b{font-size:13px;line-height:12px}
+.calday-v5.done{background:#e1f4e6;border-color:#c3e9ce;color:#167b3c}
+.calday-v5.missed{background:#fde8e8;border-color:#f4cece;color:#b53333}
+.calday-v5.is-today{outline:2px solid #333;outline-offset:1px;color:#222}
+.calday-v5.rest{background:#eee;color:#999}
+.legend{display:flex;flex-wrap:wrap;gap:9px;margin-top:15px;font-size:11px;color:#777}
+.legend span{display:flex;align-items:center;gap:4px}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#ccc}
+.dot.green{background:#289753}.dot.red{background:#d74a4a}.dot.gray{background:#bbb}
+</style></head><body><header><div class="head"><div><div class="logo">🏋️ Mi Gym</div><div class="small">Tu entrenamiento · Tus datos</div></div><span class="pill">🔒 En este dispositivo</span></div></header><main id="app" class="shell"></main><nav class="nav"><button data-view="home" class="active">⌂<br>Inicio</button><button data-view="train">🏋️<br>Entrenar</button><button data-view="progress">📈<br>Progreso</button><button data-view="settings">⚙️<br>Datos</button></nav><script>
 "use strict";
 const PLAN=[
 ["Pecho, hombros y tríceps",[["Press de pecho con mancuernas",3,"8–12","kg por mancuerna"],["Press inclinado con mancuernas",3,"10–12","kg por mancuerna"],["Press de hombros sentado",3,"8–12","kg por mancuerna"],["Elevaciones laterales",3,"12–15","kg por mancuerna"],["Extensión de tríceps con mancuerna",3,"10–15","kg total"]]],
@@ -98,7 +137,7 @@ const sid=()=>`${state.week}_${state.day}`;
 function session(){let k=sid();return state.sessions[k]??(state.sessions[k]={date:new Date().toISOString().slice(0,10),sets:{},notes:"",warm:false,cardio:false,cool:false})}
 const count=(s)=>Object.values(s?.sets||{}).filter(r=>r.done).length;
 const expected=d=>PLAN[d][1].reduce((a,e)=>a+(state.week===1?2:state.week===2?Math.min(3,e[1]):e[1]),0);
-const datestr=d=>d.toISOString().slice(0,10);
+const datestr=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
 const uniqueNames=()=>[...new Set(PLAN.flatMap(d=>d[1].map(e=>e[0])))];
 function recordsFor(name,excludeId){let results=[];
  for(const [id,s] of Object.entries(state.sessions)){if(id===excludeId)continue;const [w,d]=id.split("_").map(Number);if(!PLAN[d])continue;
@@ -117,31 +156,47 @@ let completed=last.records.length>=Math.min(e[1],state.week===1?2:state.week===2
 let good=last.records.every(r=>Number(r.reps)>=t&&Number(r.weight)>0);
 if(completed&&good)return "💡 Completaste el máximo de repeticiones. Si la técnica fue buena y no hubo molestias, podrías probar un pequeño aumento de carga.";
 return "💡 Puedes repetir la última carga y buscar mejorar las repeticiones manteniendo buena técnica."}
-function render(){document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.view===view));({home,train,progress,calendar,library,settings})[view]();updateTimer()}
+function render(){document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.view===view));({home,train,progress,library,settings})[view]();updateTimer()}
 function timerStart(){restUntil=Date.now()+state.restSeconds*1000;updateTimer();if(ticker)clearInterval(ticker);ticker=setInterval(updateTimer,300)}
 function updateTimer(){let el=$("timerDigits");if(!el)return;let remain=Math.max(0,Math.ceil((restUntil-Date.now())/1000));el.textContent=`${String(Math.floor(remain/60)).padStart(2,"0")}:${String(remain%60).padStart(2,"0")}`;
 if(remain===0&&restUntil){restUntil=0;if(ticker)clearInterval(ticker);ticker=null;try{navigator.vibrate?.([180,90,180])}catch{};try{let a=new (window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);o.frequency.value=720;g.gain.value=.1;o.start();o.stop(a.currentTime+.25);o.onended=()=>a.close()}catch{}}
 }
+function historyStart(){
+ const dates=Object.values(state.sessions).filter(x=>x.date&&(x.endedAt||count(x)>0)).map(x=>x.date).sort();
+ if(!state.trackingStart){state.trackingStart=dates[0]||datestr(new Date());save()}
+ return dates[0]&&dates[0]<state.trackingStart?dates[0]:state.trackingStart
+}
+function finishedOn(date){return Object.entries(state.sessions).filter(([id,s])=>s.date===date&&s.endedAt)}
 function home(){
-const today=new Date(),todayISO=datestr(today),dow=(today.getDay()+6)%7;
-const chosen=state.schedule[todayISO]!==undefined?state.schedule[todayISO]:(dow<5?dow:null);
-const start=new Date(today);start.setDate(today.getDate()-dow);
-const doneSessions=Object.values(state.sessions).filter(x=>x.endedAt).length;
-const active=Object.entries(state.sessions).find(([k,v])=>v.startedAt&&!v.endedAt);
-$("app").innerHTML=`<div class="home-hello"><div class="small">MI GYM · TU ESPACIO</div><h1>Hola, ¡a por ello! <span>✦</span></h1><p>${today.toLocaleDateString("es",{weekday:"long",day:"numeric",month:"long"})}</p></div>
-<div class="home-week">${Array.from({length:7},(_,i)=>{let d=new Date(start);d.setDate(start.getDate()+i);let key=datestr(d);let idx=state.schedule[key]!==undefined?state.schedule[key]:(i<5?i:null);let completed=Object.values(state.sessions).some(x=>x.date===key&&x.endedAt);return `<button class="home-day ${key===todayISO?"current":""} ${completed?"completed":""}" data-home-day="${key}" data-workout="${idx??""}"><small>${["L","M","X","J","V","S","D"][i]}</small><strong>${d.getDate()}</strong>${completed?"<em>✓</em>":""}</button>`}).join("")}</div>
-<div class="home-stats"><div><strong>${doneSessions}</strong><span>Sesiones finalizadas</span></div><div><strong>${Object.values(state.sessions).reduce((n,x)=>n+count(x),0)}</strong><span>Series completadas</span></div></div>
-<h2 class="home-section">Plan de hoy</h2>
-${chosen===null?`<div class="home-workout"><div class="home-chip">RECUPERACIÓN</div><h2>Hoy toca descansar 🌿</h2><p>La recuperación también forma parte del entrenamiento.</p><button class="home-outline" id="openAgenda">Ver calendario →</button></div>`:`<div class="home-workout"><div class="home-chip">${active?"EN CURSO":"ENTRENAMIENTO DEL DÍA"}</div><h2>${esc(PLAN[chosen][0])}</h2><p>${PLAN[chosen][1].length} ejercicios · 60 min aprox.</p><div class="home-exercises">${PLAN[chosen][1].slice(0,3).map(x=>`<span>${esc(x[0])}</span>`).join("")}</div><button class="home-main" id="openToday">${active?"Continuar entrenamiento":"Ver entrenamiento"} <span>→</span></button></div>`}
-<h2 class="home-section">Tu semana</h2><div class="home-weeklist">${PLAN.map((x,i)=>`<button data-plan-day="${i}"><span class="home-dayname">${["Lun","Mar","Mié","Jue","Vie"][i]}</span><span>${esc(x[0])}</span><span>›</span></button>`).join("")}</div>
-<p class="home-foot">Tus datos permanecen en este dispositivo. Haz copias JSON regularmente.</p>`;
-if($("openToday"))$("openToday").onclick=()=>{state.day=chosen;let x=session();if(!x.startedAt&&count(x)===0)x.date=todayISO;save();view="train";openExercise=0;render()};
-if($("openAgenda"))$("openAgenda").onclick=()=>{view="calendar";render()};
-document.querySelectorAll("[data-plan-day]").forEach(b=>b.onclick=()=>{state.day=+b.dataset.planDay;save();view="train";openExercise=0;render()});
-document.querySelectorAll("[data-home-day]").forEach(b=>b.onclick=()=>{let i=b.dataset.workout;if(i===""){view="calendar";render();return}state.day=+i;let x=session();if(!x.startedAt&&count(x)===0)x.date=b.dataset.homeDay;save();view="train";openExercise=0;render()});
+ const today=new Date(),todayISO=datestr(today),dow=(today.getDay()+6)%7,chosen=dow<5?dow:null;
+ const begin=historyStart(),month=new Date(calendarMonth+"-01T12:00:00"),year=month.getFullYear(),mo=month.getMonth();
+ const nDays=new Date(year,mo+1,0).getDate(),offset=(new Date(year,mo,1).getDay()+6)%7;
+ const complete=Object.values(state.sessions).filter(x=>x.endedAt);
+ const thisMonth=complete.filter(x=>x.date?.startsWith(calendarMonth));
+ const status=(date,weekday)=>finishedOn(date).length?"done":weekday>=5?"rest":date<begin||date>todayISO?"future":date===todayISO?"today":"missed";
+ $("app").innerHTML=`<div class="home-hello"><div class="small">MI GYM · 5.0</div><h1>Tu entrenamiento</h1><p>${today.toLocaleDateString("es",{weekday:"long",day:"numeric",month:"long"})}</p></div>
+ <div class="panel calendar-home"><div class="toolbar"><strong>${month.toLocaleDateString("es",{month:"long",year:"numeric"})}</strong><div class="actions"><button class="secondary" id="monthPrev">‹</button><button class="secondary" id="monthNext">›</button></div></div>
+ <div class="calgrid">${["L","M","X","J","V","S","D"].map(x=>`<span class="cal-head">${x}</span>`).join("")}${Array.from({length:offset},()=>"<span></span>").join("")}${Array.from({length:nDays},(_,i)=>{const d=new Date(year,mo,i+1),date=datestr(d),st=status(date,(d.getDay()+6)%7);return `<button class="calday-v5 ${st} ${date===todayISO?"is-today":""}" data-history="${date}" title="${st==="done"?"Completado":st==="missed"?"No realizado":st==="rest"?"Descanso":"Pendiente"}"><span>${i+1}</span>${st==="done"?"<b>✓</b>":st==="missed"?"<b>×</b>":""}</button>`}).join("")}</div>
+ <div class="legend"><span><i class="dot green"></i> Completado</span><span><i class="dot red"></i> No realizado</span><span><i class="dot gray"></i> Descanso / futuro</span></div>
+ <p class="small">Los días anteriores a tu primer registro no se consideran ausencias. El entrenamiento solo cuenta como completado al pulsar «Finalizar».</p></div>
+ <div id="historyInfo"></div>
+ <div class="home-stats"><div><strong>${thisMonth.length}</strong><span>Sesiones este mes</span></div><div><strong>${complete.length}</strong><span>Sesiones completadas</span></div></div>
+ <h2 class="home-section">Hoy</h2>
+ ${chosen===null?`<div class="home-workout"><div class="home-chip">DESCANSO</div><h2>Recuperación</h2><p>Hoy no tienes entrenamiento programado.</p></div>`:`<div class="home-workout"><div class="home-chip">${finishedOn(todayISO).length?"COMPLETADO":"RUTINA DE HOY"}</div><h2>${esc(PLAN[chosen][0])}</h2><p>${PLAN[chosen][1].length} ejercicios · 60 min aprox.</p><button class="home-main" id="openToday">${finishedOn(todayISO).length?"Ver entrenamiento":"Ir al entrenamiento"} →</button></div>`}
+ <h2 class="home-section">Rutina semanal</h2><div class="home-weeklist">${PLAN.map((x,i)=>`<button data-plan-day="${i}"><span class="home-dayname">${["Lun","Mar","Mié","Jue","Vie"][i]}</span><span>${esc(x[0])}</span><span>›</span></button>`).join("")}</div><p class="home-foot">Sin sincronización externa · Guarda una copia JSON de vez en cuando</p>`;
+ $("monthPrev").onclick=()=>{calendarMonth=datestr(new Date(year,mo-1,1)).slice(0,7);render()};
+ $("monthNext").onclick=()=>{calendarMonth=datestr(new Date(year,mo+1,1)).slice(0,7);render()};
+ document.querySelectorAll("[data-history]").forEach(btn=>btn.onclick=()=>{const date=btn.dataset.history,records=finishedOn(date),el=$("historyInfo");if(records.length){el.innerHTML=`<div class="panel"><strong>✓ ${esc(date)}</strong>${records.map(([id,r])=>{const day=Number(id.split("_")[1]);return `<p>${esc(PLAN[day]?.[0]||"Entrenamiento")} · ${count(r)} series · ${r.startedAt?duration(new Date(r.endedAt)-new Date(r.startedAt)):"Duración no registrada"}</p>`}).join("")}</div>`}else{el.innerHTML=`<div class="panel"><strong>${esc(date)}</strong><p class="muted">Sin entrenamiento finalizado.</p></div>`}});
+ if($("openToday"))$("openToday").onclick=()=>{state.day=chosen;const x=session();if(!x.startedAt&&count(x)===0)x.date=todayISO;save();view="train";openExercise=0;render()};
+ document.querySelectorAll("[data-plan-day]").forEach(btn=>btn.onclick=()=>{state.day=+btn.dataset.planDay;save();view="train";openExercise=0;render()});
 }
 function duration(ms){let m=Math.floor(Math.max(0,ms)/60000);return `${Math.floor(m/60)} h ${m%60} min`}
 function finishSummary(s){let completed=Object.values(s.sets||{}).filter(x=>x.done),volume=completed.reduce((sum,x)=>sum+(Number(x.weight)||0)*(Number(x.reps)||0),0);return `<div class="panel"><h2>🏆 Entrenamiento finalizado</h2><p>Duración: <strong>${duration(new Date(s.endedAt)-new Date(s.startedAt))}</strong></p><p>Series completadas: <strong>${completed.length}</strong></p><p>Volumen registrado: <strong>${volume.toLocaleString("es-ES",{maximumFractionDigits:1})} kg</strong></p><p class="small">El volumen solo suma series con kilos y repeticiones numéricas.</p><button class="secondary" id="restartSession">Reabrir entrenamiento</button></div>`}
+function exerciseImage(name){
+ const n=name.toLowerCase();
+ let file=n.includes("hip thrust")?"hip":n.includes("inclinado")?"incline":n.includes("press de pecho")?"press":n.includes("press de hombros")?"shoulder":n.includes("elevaciones laterales")||n.includes("reverse fly")?"raise":n.includes("remo")?"row":n.includes("sentadilla")||n.includes("sentarse")?"squat":n.includes("peso muerto")?"deadlift":n.includes("curl")?"curl":n.includes("plancha")||n.includes("crunch")?"plank":n.includes("gemelo")?"calf":n.includes("puente")||n.includes("glute bridge")||n.includes("abducción")?"floor":"generic";
+ return "./ejercicios/"+file+".svg"
+}
 function train(){
 const s=session(),p=PLAN[state.day],total=PLAN.reduce((a,_,i)=>a+count(state.sessions[`${state.week}_${i}`]),0),max=PLAN.reduce((a,_,i)=>a+expected(i),0);
 $("app").innerHTML=`<div class="toolbar"><div><div class="small">PLAN PERSONAL · 5 DÍAS</div><h1 class="title">Semana ${state.week}</h1></div><div class="actions"><button class="secondary" id="prevW" ${state.week===1?"disabled":""}>−</button><button class="secondary" id="nextW">+</button></div></div>
@@ -154,7 +209,7 @@ ${state.week<=2?`<p class="warning">Semana ${state.week}: readaptación. ${state
 <div class="panel"><label class="small">Fecha real de esta sesión</label><input class="input" id="date" type="date" value="${esc(s.date)}"><p><label><input type="checkbox" id="warm" ${s.warm?"checked":""}> Calentamiento realizado (8 min)</label></p></div>
 <div class="timerbox"><div class="toolbar"><div><div class="small">DESCANSO ENTRE SERIES</div><div class="timerdigits" id="timerDigits">00:00</div></div><div><select id="restSelect">${[60,90,120,150,180].map(n=>`<option value="${n}" ${state.restSeconds===n?"selected":""}>${n}s</option>`).join("")}</select><div class="actions"><button class="secondary" id="timerStart">Iniciar</button><button class="secondary" id="timerStop">Parar</button></div></div></div><div class="small">Al marcar una serie se inicia el descanso. El aviso puede no sonar si Android suspende la app en segundo plano.</div></div>
 <h2 class="section">Ejercicios · toca para desplegar</h2>
-${p[1].map((e,i)=>{let n=state.week===1?2:state.week===2?Math.min(3,e[1]):e[1];let done=Object.entries(s.sets||{}).filter(([k,r])=>k.startsWith(i+"_")&&r.done).length;return `<details class="panel exercise-accordion" data-exercise="${i}" ${openExercise===i?"open":""}><summary><div><div class="exercise-heading">${i+1}. ${e[0]}</div><div class="detail">${n} series · ${e[2]} · ${e[3]}</div></div><div class="line"><span class="pill">${done}/${n}</span><span class="exercise-chevron">⌄</span></div></summary><div class="exercise-inner">${formatLast(e)}${hint(e)?`<p class="exercise-note">${hint(e)}</p>`:""}<div class="setgrid">${Array.from({length:n},(_,j)=>{let r=s.sets[`${i}_${j}`]||{};return `<div class="set"><label>Serie ${j+1}</label><label>${e[3].includes("kg")?"Peso (kg)":e[3].includes("segundos")?"Segundos":e[3].includes("inclinación")?"Nivel":"Reps"}</label><input data-e="${i}" data-s="${j}" data-field="weight" type="${e[3].includes("inclinación")?"text":"number"}" step="any" min="0" placeholder="—" value="${esc(r.weight??"")}"><label>Reps / tiempo</label><input data-e="${i}" data-s="${j}" data-field="reps" type="number" min="0" placeholder="—" value="${esc(r.reps??"")}"><button data-e="${i}" data-s="${j}" data-done="1" class="${r.done?"done":""}">${r.done?"✓ Hecha":"Marcar"}</button></div>`}).join("")}</div><div class="actions"><button class="secondary" data-guide="${esc(e[0])}">📖 Técnica</button></div></div></details>`}).join("")}
+${p[1].map((e,i)=>{let n=state.week===1?2:state.week===2?Math.min(3,e[1]):e[1];let done=Object.entries(s.sets||{}).filter(([k,r])=>k.startsWith(i+"_")&&r.done).length;return `<details class="panel exercise-accordion" data-exercise="${i}" ${openExercise===i?"open":""}><summary><div><div class="exercise-title-row"><img class="exercise-thumb" src="${exerciseImage(e[0])}" alt="Ilustración de ${esc(e[0])}" loading="lazy"><div><div class="exercise-heading">${i+1}. ${e[0]}</div><div class="detail">${n} series · ${e[2]} · ${e[3]}</div></div></div><div class="line"><span class="pill">${done}/${n}</span><span class="exercise-chevron">⌄</span></div></summary><div class="exercise-inner">${formatLast(e)}${hint(e)?`<p class="exercise-note">${hint(e)}</p>`:""}<div class="setgrid">${Array.from({length:n},(_,j)=>{let r=s.sets[`${i}_${j}`]||{};return `<div class="set"><label>Serie ${j+1}</label><label>${e[3].includes("kg")?"Peso (kg)":e[3].includes("segundos")?"Segundos":e[3].includes("inclinación")?"Nivel":"Reps"}</label><input data-e="${i}" data-s="${j}" data-field="weight" type="${e[3].includes("inclinación")?"text":"number"}" step="any" min="0" placeholder="—" value="${esc(r.weight??"")}"><label>Reps / tiempo</label><input data-e="${i}" data-s="${j}" data-field="reps" type="number" min="0" placeholder="—" value="${esc(r.reps??"")}"><button data-e="${i}" data-s="${j}" data-done="1" class="${r.done?"done":""}">${r.done?"✓ Hecha":"Marcar"}</button></div>`}).join("")}</div><div class="actions"><button class="secondary" data-guide="${esc(e[0])}">📖 Técnica</button></div></div></details>`}).join("")}
 <div class="panel"><p><label><input type="checkbox" id="cardio" ${s.cardio?"checked":""}> Cardio sin impacto (5 min)</label></p><p><label><input type="checkbox" id="cool" ${s.cool?"checked":""}> Vuelta a la calma (5 min)</label></p><label class="small">Notas · Rodilla y sensaciones</label><textarea class="input" id="notes" rows="3">${esc(s.notes)}</textarea></div>
 <p class="warning">Menisco: detén el ejercicio ante dolor, hinchazón, bloqueo o inestabilidad. Evita los giros bruscos y progresiones precipitadas.</p><button class="primary" id="nextDay">Siguiente día →</button>`;
 $("backHome").onclick=()=>{view="home";render()};
@@ -179,14 +234,6 @@ function progress(){const latest=state.metrics.slice().sort((a,b)=>a.date.locale
 $("app").innerHTML=`<h1 class="title">Progreso y récords</h1><div class="panel"><h2>Evolución de fuerza</h2><label class="small">Ejercicio</label><select class="input" id="exSelect">${names.map(n=>`<option ${n===selectedExercise?"selected":""}>${esc(n)}</option>`).join("")}</select><p><span class="tag">Mejor carga: ${maxWeight??"—"} kg</span> <span class="tag">Series registradas: ${points.length}</span></p>${chartSvg(points,"weight","kg")}<p class="small">Gráfico de cargas de series completadas. Compara el mismo ejercicio y técnica.</p></div><div class="panel"><h2>Medición corporal</h2><div class="rowgrid"><div><label class="small">Peso (kg)</label><input class="input" id="bodyWeight" type="number" step=".1" placeholder="85"></div><div><label class="small">Cintura (cm)</label><input class="input" id="waist" type="number" step=".1"></div></div><div style="margin-top:10px"><label class="small">Fecha</label><input class="input" id="metricDate" type="date" value="${datestr(new Date())}"></div><div class="actions"><button class="primary" id="addMetric">Guardar medición</button></div><h2 class="section">Peso corporal</h2>${chartSvg(latest,"weight","kg")}<h2 class="section">Cintura</h2>${chartSvg(latest,"waist","cm")}</div><div class="panel"><h2>Mediciones anteriores</h2>${latest.length?`<table><tr><th>Fecha</th><th>Peso</th><th>Cintura</th></tr>${latest.map(m=>`<tr><td>${esc(m.date)}</td><td>${esc(m.weight||"—")}</td><td>${esc(m.waist||"—")}</td></tr>`).join("")}</table>`:"<p class='muted'>Todavía no hay registros.</p>"}</div>`;
 $("exSelect").onchange=e=>{selectedExercise=e.target.value;render()};
 $("addMetric").onclick=()=>{let date=$("metricDate").value,weight=$("bodyWeight").value,waist=$("waist").value;if(!date||(!weight&&!waist)){alert("Introduce una fecha y al menos una medida.");return}state.metrics=state.metrics.filter(m=>m.date!==date);state.metrics.push({date,weight,waist});save();render()}
-}
-function calendar(){let [year,month]=calendarMonth.split("-").map(Number),first=new Date(year,month-1,1),days=new Date(year,month,0).getDate(),offset=(first.getDay()+6)%7;
-let logged=new Set(Object.values(state.sessions).filter(s=>count(s)>0).map(s=>s.date));let appointments=Object.entries(state.schedule).filter(([date])=>date.startsWith(calendarMonth)).sort(([a],[b])=>a.localeCompare(b));
-$("app").innerHTML=`<h1 class="title">Calendario flexible</h1><p class="muted">Planifica el entrenamiento en la fecha que te venga bien, independientemente del día de la semana.</p><div class="panel"><div class="toolbar"><button class="secondary" id="monthPrev">←</button><strong>${first.toLocaleDateString("es",{month:"long",year:"numeric"})}</strong><button class="secondary" id="monthNext">→</button></div><div class="calgrid" style="margin-top:12px">${["L","M","X","J","V","S","D"].map(x=>`<span class="small" style="text-align:center">${x}</span>`).join("")}${Array.from({length:offset},()=>"<span></span>").join("")}${Array.from({length:days},(_,i)=>{let date=`${calendarMonth}-${String(i+1).padStart(2,"0")}`;return `<button class="calday ${logged.has(date)?"logged":""} ${state.schedule[date]?"selected":""}" data-date="${date}">${i+1}${state.schedule[date]?" •":""}</button>`}).join("")}</div><p class="small">Borde verde: sesión registrada · Fondo verde: sesión planificada</p></div><div class="panel"><h2>Programar un entrenamiento</h2><label class="small">Fecha</label><input class="input" id="planDate" type="date" value="${datestr(new Date())}"><label class="small">Sesión</label><select class="input" id="planWorkout"><option value="">Descanso / eliminar planificación</option>${PLAN.map((p,i)=>`<option value="${i}">${esc(p[0])}</option>`).join("")}</select><div class="actions"><button class="primary" id="savePlan">Guardar en calendario</button></div></div><div class="panel"><h2>Sesiones planificadas</h2>${appointments.length?appointments.map(([date,d])=>`<div class="line" style="padding:8px 0"><span>${esc(date)} · ${esc(PLAN[d]?.[0]||"—")}</span><button class="secondary" data-plan-open="${date}">Abrir</button></div>`).join(""):"<p class='muted'>No hay sesiones planificadas este mes.</p>"}</div>`;
-$("monthPrev").onclick=()=>{calendarMonth=datestr(new Date(year,month-2,1)).slice(0,7);render()};$("monthNext").onclick=()=>{calendarMonth=datestr(new Date(year,month,1)).slice(0,7);render()};
-document.querySelectorAll("[data-date]").forEach(b=>b.onclick=()=>{$("planDate").value=b.dataset.date;$("planWorkout").value=state.schedule[b.dataset.date]??""});
-$("savePlan").onclick=()=>{let date=$("planDate").value,day=$("planWorkout").value;if(!date)return;if(day==="")delete state.schedule[date];else state.schedule[date]=+day;calendarMonth=date.slice(0,7);save();render()};
-document.querySelectorAll("[data-plan-open]").forEach(b=>b.onclick=()=>{let date=b.dataset.planOpen;state.day=state.schedule[date];let s=session();if(count(s)===0)s.date=date;save();view="train";openExercise=0;render()})
 }
 const GUIDE={
 "Hip thrust con barra":["Banco estable bajo la espalda alta; pies firmes y barra acolchada sobre la cadera.","Eleva la pelvis contrayendo glúteos, sin arquear la zona lumbar. Baja controladamente.","Evita acercar excesivamente los pies o provocar dolor de rodilla."],

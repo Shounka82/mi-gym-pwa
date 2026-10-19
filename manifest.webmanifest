@@ -1,15 +1,25 @@
 {
-  "name": "Mi Gym Privado",
+  "name": "Mi Gym 5.0",
   "short_name": "Mi Gym",
   "description": "Entrenamiento personal y registro local privado",
   "lang": "es",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#101b19",
-  "theme_color": "#101b19",
+  "background_color": "#f5f5f5",
+  "theme_color": "#242424",
   "icons": [
-    {"src":"./icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
-    {"src":"./icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
   ]
 }
