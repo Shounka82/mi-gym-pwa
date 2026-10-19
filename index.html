@@ -195,7 +195,7 @@ function finishSummary(s){let completed=Object.values(s.sets||{}).filter(x=>x.do
 function exerciseImage(name){
  const n=name.toLowerCase();
  let file=n.includes("hip thrust")?"hip":n.includes("inclinado")?"incline":n.includes("press de pecho")?"press":n.includes("press de hombros")?"shoulder":n.includes("elevaciones laterales")||n.includes("reverse fly")?"raise":n.includes("remo")?"row":n.includes("sentadilla")||n.includes("sentarse")?"squat":n.includes("peso muerto")?"deadlift":n.includes("curl")?"curl":n.includes("plancha")||n.includes("crunch")?"plank":n.includes("gemelo")?"calf":n.includes("puente")||n.includes("glute bridge")||n.includes("abducción")?"floor":"generic";
- return "./ejercicios/"+file+".svg"
+ return "./"+file+".svg"
 }
 function train(){
 const s=session(),p=PLAN[state.day],total=PLAN.reduce((a,_,i)=>a+count(state.sessions[`${state.week}_${i}`]),0),max=PLAN.reduce((a,_,i)=>a+expected(i),0);
