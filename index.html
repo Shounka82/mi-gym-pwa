@@ -23,7 +23,61 @@ button:disabled{opacity:.45;cursor:not-allowed}
 .calday:disabled{opacity:.3}
 .tag{display:inline-block;border:1px solid #548066;border-radius:10px;padding:4px 7px;font-size:12px;color:#c6e3ce}
 .set input{color-scheme:light}
-</style></head><body><header><div class="head"><div><div class="logo">🏋️ Mi Gym</div><div class="small">Tu entrenamiento · Tus datos</div></div><span class="pill">🔒 En este dispositivo</span></div></header><main id="app" class="shell"></main><nav class="nav"><button data-view="train" class="active">🏋️<br>Entrenar</button><button data-view="progress">📈<br>Progreso</button><button data-view="calendar">📅<br>Agenda</button><button data-view="library">📖<br>Técnica</button><button data-view="settings">⚙️<br>Datos</button></nav><script>
+
+:root{color:#26271f;background:#f7f5ef}
+body{background:#f7f5ef;color:#292a24}
+header{background:#faf8f3ee;border-bottom:1px solid #e8e4db}
+.logo{color:#252821}
+.small,.muted,.detail{color:#787970}
+.panel,.home-workout,.home-weeklist{background:#fff;border:1px solid #eae7df;border-radius:19px;box-shadow:0 2px 12px #1d281009}
+.nav{background:#fff;border-top:1px solid #eae7df}
+.nav button{color:#7a7c72}
+.nav button.active{color:#24271d;background:#ffcb56}
+.tab,.secondary{background:#fff;color:#33362b;border:1px solid #dddcd5}
+.tab.active,.primary{background:#ffca4f;color:#25251e;border-color:#ffca4f}
+.warning{background:#fff4d5;color:#69501d;border-color:#f0db9b}
+.timerbox{background:#fff;border:1px solid #eae7df;color:#292a24}
+.timerdigits{color:#24251e}
+.last-session{background:#fff8e7;color:#4b402a}
+.pill,.tag{background:#fff8e8;color:#4d442b;border-color:#e7d3a1}
+input.input,textarea.input,select.input,.set input{background:#fff;color:#171915;border:2px solid #bcbdb6;border-radius:13px;font-size:19px;min-height:54px;padding:12px}
+.set input{width:100%;font-size:23px;font-weight:700;text-align:center;min-height:62px}
+.set{background:#faf9f5;border-radius:15px;padding:12px}
+.set label{color:#57584e}
+.set button.done{background:#ffce61;color:#28291f}
+.exercise-heading{color:#26281e}
+.exercise-accordion summary{padding:8px 2px}
+.home-hello{padding:12px 2px 8px}
+.home-hello h1{font-size:28px;letter-spacing:-.8px;margin:6px 0}
+.home-hello h1 span{color:#e8a821}
+.home-hello p{color:#7a7b72;text-transform:capitalize;margin:0 0 10px}
+.home-week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;margin:15px 0}
+.home-day{background:#fff;border:1px solid #ece9df;border-radius:15px;padding:10px 1px;min-height:68px;display:flex;flex-direction:column;align-items:center;gap:7px;color:#4a4b43;position:relative}
+.home-day small{font-size:11px}
+.home-day strong{font-size:17px}
+.home-day.current{background:#ffca4f;border-color:#ffca4f;color:#24251e}
+.home-day.completed{border-color:#7baf86}
+.home-day em{position:absolute;bottom:0;right:3px;font-size:9px;font-style:normal}
+.home-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.home-stats>div{background:#fff;border:1px solid #ece9df;border-radius:17px;padding:17px;display:flex;flex-direction:column;gap:4px}
+.home-stats strong{font-size:26px}
+.home-stats span{color:#88877d;font-size:12px}
+.home-section{font-size:19px;margin:25px 0 12px}
+.home-workout{padding:22px}
+.home-chip{display:inline-block;background:#fff0c6;border-radius:20px;padding:6px 11px;font-size:10px;font-weight:800;letter-spacing:1px}
+.home-workout h2{font-size:24px;line-height:1.2;margin:18px 0 6px}
+.home-workout p{color:#77776e}
+.home-exercises{display:flex;flex-wrap:wrap;gap:7px;margin:17px 0}
+.home-exercises span{font-size:11px;border:1px solid #ebe8df;border-radius:15px;padding:7px}
+.home-main{background:#ffca4f;color:#25251e;border:0;border-radius:13px;width:100%;padding:16px;font-weight:800;display:flex;justify-content:space-between}
+.home-outline{border:1px solid #ddd7c8;background:#fff;border-radius:12px;padding:13px}
+.home-weeklist{overflow:hidden}
+.home-weeklist button{width:100%;display:flex;align-items:center;gap:12px;text-align:left;background:transparent;border:0;border-bottom:1px solid #efede7;padding:16px;color:#32352c}
+.home-weeklist button span:nth-child(2){flex:1}
+.home-dayname{font-weight:800;font-size:12px;color:#777}
+.home-foot{color:#99988e;font-size:12px;text-align:center;margin:24px 0}
+.home-back{background:transparent;border:0;color:#8d7535;padding:10px 0}
+</style></head><body><header><div class="head"><div><div class="logo">🏋️ Mi Gym</div><div class="small">Tu entrenamiento · Tus datos</div></div><span class="pill">🔒 En este dispositivo</span></div></header><main id="app" class="shell"></main><nav class="nav"><button data-view="home" class="active">⌂<br>Inicio</button><button data-view="train">🏋️<br>Entrenar</button><button data-view="progress">📈<br>Progreso</button><button data-view="calendar">📅<br>Agenda</button><button data-view="library">📖<br>Técnica</button><button data-view="settings">⚙️<br>Datos</button></nav><script>
 "use strict";
 const PLAN=[
 ["Pecho, hombros y tríceps",[["Press de pecho con mancuernas",3,"8–12","kg por mancuerna"],["Press inclinado con mancuernas",3,"10–12","kg por mancuerna"],["Press de hombros sentado",3,"8–12","kg por mancuerna"],["Elevaciones laterales",3,"12–15","kg por mancuerna"],["Extensión de tríceps con mancuerna",3,"10–15","kg total"]]],
@@ -36,7 +90,7 @@ const PLAN=[
 const STORE="migym_v1";
 let state;try{state=JSON.parse(localStorage.getItem(STORE))||{}}catch{state={}}
 state.sessions??={};state.metrics??=[];state.day??=0;state.week??=1;state.schedule??={};state.restSeconds??=90;
-let view="train",openExercise=0,restUntil=0,ticker=null,alarmCtx=null,selectedExercise="Hip thrust con barra",calendarMonth=new Date().toISOString().slice(0,7);
+let view="home",openExercise=0,restUntil=0,ticker=null,alarmCtx=null,selectedExercise="Hip thrust con barra",calendarMonth=new Date().toISOString().slice(0,7);
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const save=()=>{try{localStorage.setItem(STORE,JSON.stringify(state))}catch{alert("No se ha podido guardar. Exporta una copia de seguridad.")}};
@@ -63,17 +117,39 @@ let completed=last.records.length>=Math.min(e[1],state.week===1?2:state.week===2
 let good=last.records.every(r=>Number(r.reps)>=t&&Number(r.weight)>0);
 if(completed&&good)return "💡 Completaste el máximo de repeticiones. Si la técnica fue buena y no hubo molestias, podrías probar un pequeño aumento de carga.";
 return "💡 Puedes repetir la última carga y buscar mejorar las repeticiones manteniendo buena técnica."}
-function render(){document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.view===view));({train,progress,calendar,library,settings})[view]();updateTimer()}
+function render(){document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.view===view));({home,train,progress,calendar,library,settings})[view]();updateTimer()}
 function timerStart(){restUntil=Date.now()+state.restSeconds*1000;updateTimer();if(ticker)clearInterval(ticker);ticker=setInterval(updateTimer,300)}
 function updateTimer(){let el=$("timerDigits");if(!el)return;let remain=Math.max(0,Math.ceil((restUntil-Date.now())/1000));el.textContent=`${String(Math.floor(remain/60)).padStart(2,"0")}:${String(remain%60).padStart(2,"0")}`;
 if(remain===0&&restUntil){restUntil=0;if(ticker)clearInterval(ticker);ticker=null;try{navigator.vibrate?.([180,90,180])}catch{};try{let a=new (window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);o.frequency.value=720;g.gain.value=.1;o.start();o.stop(a.currentTime+.25);o.onended=()=>a.close()}catch{}}
 }
+function home(){
+const today=new Date(),todayISO=datestr(today),dow=(today.getDay()+6)%7;
+const chosen=state.schedule[todayISO]!==undefined?state.schedule[todayISO]:(dow<5?dow:null);
+const start=new Date(today);start.setDate(today.getDate()-dow);
+const doneSessions=Object.values(state.sessions).filter(x=>x.endedAt).length;
+const active=Object.entries(state.sessions).find(([k,v])=>v.startedAt&&!v.endedAt);
+$("app").innerHTML=`<div class="home-hello"><div class="small">MI GYM · TU ESPACIO</div><h1>Hola, ¡a por ello! <span>✦</span></h1><p>${today.toLocaleDateString("es",{weekday:"long",day:"numeric",month:"long"})}</p></div>
+<div class="home-week">${Array.from({length:7},(_,i)=>{let d=new Date(start);d.setDate(start.getDate()+i);let key=datestr(d);let idx=state.schedule[key]!==undefined?state.schedule[key]:(i<5?i:null);let completed=Object.values(state.sessions).some(x=>x.date===key&&x.endedAt);return `<button class="home-day ${key===todayISO?"current":""} ${completed?"completed":""}" data-home-day="${key}" data-workout="${idx??""}"><small>${["L","M","X","J","V","S","D"][i]}</small><strong>${d.getDate()}</strong>${completed?"<em>✓</em>":""}</button>`}).join("")}</div>
+<div class="home-stats"><div><strong>${doneSessions}</strong><span>Sesiones finalizadas</span></div><div><strong>${Object.values(state.sessions).reduce((n,x)=>n+count(x),0)}</strong><span>Series completadas</span></div></div>
+<h2 class="home-section">Plan de hoy</h2>
+${chosen===null?`<div class="home-workout"><div class="home-chip">RECUPERACIÓN</div><h2>Hoy toca descansar 🌿</h2><p>La recuperación también forma parte del entrenamiento.</p><button class="home-outline" id="openAgenda">Ver calendario →</button></div>`:`<div class="home-workout"><div class="home-chip">${active?"EN CURSO":"ENTRENAMIENTO DEL DÍA"}</div><h2>${esc(PLAN[chosen][0])}</h2><p>${PLAN[chosen][1].length} ejercicios · 60 min aprox.</p><div class="home-exercises">${PLAN[chosen][1].slice(0,3).map(x=>`<span>${esc(x[0])}</span>`).join("")}</div><button class="home-main" id="openToday">${active?"Continuar entrenamiento":"Ver entrenamiento"} <span>→</span></button></div>`}
+<h2 class="home-section">Tu semana</h2><div class="home-weeklist">${PLAN.map((x,i)=>`<button data-plan-day="${i}"><span class="home-dayname">${["Lun","Mar","Mié","Jue","Vie"][i]}</span><span>${esc(x[0])}</span><span>›</span></button>`).join("")}</div>
+<p class="home-foot">Tus datos permanecen en este dispositivo. Haz copias JSON regularmente.</p>`;
+if($("openToday"))$("openToday").onclick=()=>{state.day=chosen;let x=session();if(!x.startedAt&&count(x)===0)x.date=todayISO;save();view="train";openExercise=0;render()};
+if($("openAgenda"))$("openAgenda").onclick=()=>{view="calendar";render()};
+document.querySelectorAll("[data-plan-day]").forEach(b=>b.onclick=()=>{state.day=+b.dataset.planDay;save();view="train";openExercise=0;render()});
+document.querySelectorAll("[data-home-day]").forEach(b=>b.onclick=()=>{let i=b.dataset.workout;if(i===""){view="calendar";render();return}state.day=+i;let x=session();if(!x.startedAt&&count(x)===0)x.date=b.dataset.homeDay;save();view="train";openExercise=0;render()});
+}
+function duration(ms){let m=Math.floor(Math.max(0,ms)/60000);return `${Math.floor(m/60)} h ${m%60} min`}
+function finishSummary(s){let completed=Object.values(s.sets||{}).filter(x=>x.done),volume=completed.reduce((sum,x)=>sum+(Number(x.weight)||0)*(Number(x.reps)||0),0);return `<div class="panel"><h2>🏆 Entrenamiento finalizado</h2><p>Duración: <strong>${duration(new Date(s.endedAt)-new Date(s.startedAt))}</strong></p><p>Series completadas: <strong>${completed.length}</strong></p><p>Volumen registrado: <strong>${volume.toLocaleString("es-ES",{maximumFractionDigits:1})} kg</strong></p><p class="small">El volumen solo suma series con kilos y repeticiones numéricas.</p><button class="secondary" id="restartSession">Reabrir entrenamiento</button></div>`}
 function train(){
 const s=session(),p=PLAN[state.day],total=PLAN.reduce((a,_,i)=>a+count(state.sessions[`${state.week}_${i}`]),0),max=PLAN.reduce((a,_,i)=>a+expected(i),0);
 $("app").innerHTML=`<div class="toolbar"><div><div class="small">PLAN PERSONAL · 5 DÍAS</div><h1 class="title">Semana ${state.week}</h1></div><div class="actions"><button class="secondary" id="prevW" ${state.week===1?"disabled":""}>−</button><button class="secondary" id="nextW">+</button></div></div>
 <div class="muted">Series completadas: ${total}/${max}</div><div class="progress"><div style="width:${Math.min(100,total/max*100)}%"></div></div>
 <div class="tabs">${PLAN.map((p,i)=>`<button class="tab ${i===state.day?"active":""}" data-day="${i}">${["L","M","X","J","V"][i]}<br><small>${count(state.sessions[`${state.week}_${i}`])}/${expected(i)}</small></button>`).join("")}</div>
-<h1 class="title">${p[0]}</h1><p class="muted">8 min calentar · 42 min fuerza · 5 min cardio · 5 min vuelta a la calma</p>
+<button class="home-back" id="backHome">← Volver al inicio</button><h1 class="title">${p[0]}</h1>
+${s.endedAt?finishSummary(s):s.startedAt?`<div class="panel"><strong>🟢 Entrenamiento en curso</strong><p class="muted">Inicio: ${new Date(s.startedAt).toLocaleTimeString("es",{hour:"2-digit",minute:"2-digit"})}</p><button class="primary" id="finishSession">🏁 Finalizar entrenamiento</button></div>`:`<div class="panel"><strong>¿Preparado para entrenar?</strong><p class="muted">Pulsa empezar para registrar la hora de inicio.</p><button class="primary" id="startSession">▶ Empezar entrenamiento</button></div>`}
+<p class="muted">8 min calentar · 42 min fuerza · 5 min cardio · 5 min vuelta a la calma</p>
 ${state.week<=2?`<p class="warning">Semana ${state.week}: readaptación. ${state.week===1?"2 series por ejercicio":"2–3 series por ejercicio"} y 3–4 repeticiones en reserva.</p>`:""}
 <div class="panel"><label class="small">Fecha real de esta sesión</label><input class="input" id="date" type="date" value="${esc(s.date)}"><p><label><input type="checkbox" id="warm" ${s.warm?"checked":""}> Calentamiento realizado (8 min)</label></p></div>
 <div class="timerbox"><div class="toolbar"><div><div class="small">DESCANSO ENTRE SERIES</div><div class="timerdigits" id="timerDigits">00:00</div></div><div><select id="restSelect">${[60,90,120,150,180].map(n=>`<option value="${n}" ${state.restSeconds===n?"selected":""}>${n}s</option>`).join("")}</select><div class="actions"><button class="secondary" id="timerStart">Iniciar</button><button class="secondary" id="timerStop">Parar</button></div></div></div><div class="small">Al marcar una serie se inicia el descanso. El aviso puede no sonar si Android suspende la app en segundo plano.</div></div>
@@ -81,6 +157,10 @@ ${state.week<=2?`<p class="warning">Semana ${state.week}: readaptación. ${state
 ${p[1].map((e,i)=>{let n=state.week===1?2:state.week===2?Math.min(3,e[1]):e[1];let done=Object.entries(s.sets||{}).filter(([k,r])=>k.startsWith(i+"_")&&r.done).length;return `<details class="panel exercise-accordion" data-exercise="${i}" ${openExercise===i?"open":""}><summary><div><div class="exercise-heading">${i+1}. ${e[0]}</div><div class="detail">${n} series · ${e[2]} · ${e[3]}</div></div><div class="line"><span class="pill">${done}/${n}</span><span class="exercise-chevron">⌄</span></div></summary><div class="exercise-inner">${formatLast(e)}${hint(e)?`<p class="exercise-note">${hint(e)}</p>`:""}<div class="setgrid">${Array.from({length:n},(_,j)=>{let r=s.sets[`${i}_${j}`]||{};return `<div class="set"><label>Serie ${j+1}</label><label>${e[3].includes("kg")?"Peso (kg)":e[3].includes("segundos")?"Segundos":e[3].includes("inclinación")?"Nivel":"Reps"}</label><input data-e="${i}" data-s="${j}" data-field="weight" type="${e[3].includes("inclinación")?"text":"number"}" step="any" min="0" placeholder="—" value="${esc(r.weight??"")}"><label>Reps / tiempo</label><input data-e="${i}" data-s="${j}" data-field="reps" type="number" min="0" placeholder="—" value="${esc(r.reps??"")}"><button data-e="${i}" data-s="${j}" data-done="1" class="${r.done?"done":""}">${r.done?"✓ Hecha":"Marcar"}</button></div>`}).join("")}</div><div class="actions"><button class="secondary" data-guide="${esc(e[0])}">📖 Técnica</button></div></div></details>`}).join("")}
 <div class="panel"><p><label><input type="checkbox" id="cardio" ${s.cardio?"checked":""}> Cardio sin impacto (5 min)</label></p><p><label><input type="checkbox" id="cool" ${s.cool?"checked":""}> Vuelta a la calma (5 min)</label></p><label class="small">Notas · Rodilla y sensaciones</label><textarea class="input" id="notes" rows="3">${esc(s.notes)}</textarea></div>
 <p class="warning">Menisco: detén el ejercicio ante dolor, hinchazón, bloqueo o inestabilidad. Evita los giros bruscos y progresiones precipitadas.</p><button class="primary" id="nextDay">Siguiente día →</button>`;
+$("backHome").onclick=()=>{view="home";render()};
+if($("startSession"))$("startSession").onclick=()=>{s.startedAt=new Date().toISOString();delete s.endedAt;save();render()};
+if($("finishSession"))$("finishSession").onclick=()=>{if(!confirm("¿Finalizar y guardar este entrenamiento?"))return;s.endedAt=new Date().toISOString();restUntil=0;save();render()};
+if($("restartSession"))$("restartSession").onclick=()=>{if(!confirm("¿Reabrir este entrenamiento?"))return;delete s.endedAt;save();render()};
 document.querySelectorAll("[data-day]").forEach(b=>b.onclick=()=>{state.day=+b.dataset.day;openExercise=0;save();render()});
 $("prevW").onclick=()=>{state.week=Math.max(1,state.week-1);openExercise=0;save();render()};
 $("nextW").onclick=()=>{state.week++;openExercise=0;save();render()};
